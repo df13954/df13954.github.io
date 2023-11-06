@@ -73,77 +73,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Ubuntu 18.04编译AOSP 6.0.1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" class="article-date">
-  <time class="dt-published" datetime="2023-11-06T08:08:36.864Z" itemprop="datePublished">2023-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>编译6.0.1版本自己刷机到nexus 5x中</p>
-<h2 id="代码下载"><a href="#代码下载" class="headerlink" title="代码下载"></a>代码下载</h2><p>这一步忽略，方法很多，我们直接开始编译遇到的问题。</p>
-<h2 id="遇到问题和解决方法"><a href="#遇到问题和解决方法" class="headerlink" title="遇到问题和解决方法"></a>遇到问题和解决方法</h2><p>编译6.0系统需要openjdk 7</p>
-<p>编译5.1系统需要jdk7，如果需要编译5.1的后面再出文章吧。</p>
-<h3 id="编译前提"><a href="#编译前提" class="headerlink" title="编译前提"></a>编译前提</h3><p>删除源码目录下所有git</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find ./ -name &quot;.git&quot; | xargs rm -rf</span><br><span class="line"></span><br><span class="line">//大小</span><br><span class="line">du -sh -BG</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>下载openjdk7</p>
-</blockquote>
-<p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1u_GcyI-nrrQPLv_NQ2CwRg">https://pan.baidu.com/s/1u_GcyI-nrrQPLv_NQ2CwRg</a><br>提取码：0jt0</p>
-<p>信不过网盘的可以去这里下<br><a target="_blank" rel="noopener" href="https://jdk.java.net/java-se-ri/7">https://jdk.java.net/java-se-ri/7</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo tar zxvf openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz -C /opt</span><br><span class="line"># 修改profile文件</span><br><span class="line">sudo gedit /etc/profile</span><br><span class="line"></span><br><span class="line"># 加入下面的配置</span><br><span class="line">export JAVA_HOME=/opt/java-se-7u75-ri</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre </span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib </span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br><span class="line"></span><br><span class="line"># 更新profile文件</span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>继续修改其他mk文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit build/envsetup.sh</span><br><span class="line"># 搜索  ANDROID_SET_JAVA_HOME</span><br><span class="line"># 将刚才解压的jdk路径粘贴到下方的 JAVA_HOME 变量中</span><br><span class="line"></span><br><span class="line">比如我的修改之后</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://s3oy26lqr.hn-bkt.clouddn.com/gitblog/00001-aosp6.0.1/1699258116_1.png" alt="图片描述"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo gedit build/core/main.mk</span><br></pre></td></tr></table></figure>
-
-<p>注释这一句，让脚步正常，不能断。</p>
-<p><img src="http://s3oy26lqr.hn-bkt.clouddn.com/gitblog/00001-aosp6.0.1/1699258117_2.png" alt="图片描述"></p>
-<p>继续修改：</p>
-<p>在源代码的根目录下找到 build&#x2F;core&#x2F;clang&#x2F;HOST_x86_common.mk文件，打开文件找到 CLANG_CONFIG_x86_LINUX_HOST_EXTRA_ASFLAGS 的定义，在后面增加一行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-B$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG)/x86_64-linux/bin</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://s3oy26lqr.hn-bkt.clouddn.com/gitblog/00001-aosp6.0.1/1699258117_3.png" alt="图片描述"></p>
-<p>编译之后，可能遇到的错误，但是这是我的，错误后面有解决方法。。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">Notice file: external/guava/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/guavalib.jar.txt</span><br><span class="line">Notice file: external/jsilver/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/jsilver.jar.txt</span><br><span class="line">host Java: tagsouplib (out/host/common/obj/JAVA_LIBRARIES/tagsouplib_intermediates/classes)</span><br><span class="line">Notice file: external/doclava/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/doclava.jar.txt</span><br><span class="line">Export includes file: external/boringssl/Android.mk -- out/host/linux-x86/obj/SHARED_LIBRARIES/libcrypto-host_intermediates/export_includes</span><br><span class="line">Export includes file: external/boringssl/Android.mk -- out/host/linux-x86/obj/SHARED_LIBRARIES/libssl-host_intermediates/export_includes</span><br><span class="line">Import includes file: out/host/linux-x86/obj/SHARED_LIBRARIES/libcrypto-host_intermediates/import_includes</span><br><span class="line">Export includes file: external/conscrypt/Android.mk -- out/host/linux-x86/obj/EXECUTABLES/conscrypt_generate_constants_intermediates/export_includes</span><br><span class="line">Notice file: external/conscrypt/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//bin/conscrypt_generate_constants.txt</span><br><span class="line">Notice file: external/boringssl/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//lib64/libssl-host.so.txt</span><br><span class="line">Notice file: external/boringssl/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//lib64/libcrypto-host.so.txt</span><br><span class="line">Notice file: external/jarjar/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/jarjar-apache-ant.jar.txt</span><br><span class="line">Notice file: external/jarjar/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/jarjar-maven-plugin-api.jar.txt</span><br><span class="line">Notice file: external/jarjar/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//framework/jarjar.jar.txt</span><br><span class="line">Import includes file: out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/import_includes</span><br><span class="line">Yacc: aidl &lt;= frameworks/base/tools/aidl/aidl_language_y.y</span><br><span class="line">prebuilts/misc/linux-x86/bison/bison -d  -o out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.cpp frameworks/base/tools/aidl/aidl_language_y.y</span><br><span class="line">Export includes file: frameworks/base/tools/aidl/Android.mk -- out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/export_includes</span><br><span class="line">Lex: aidl &lt;= frameworks/base/tools/aidl/aidl_language_l.l</span><br><span class="line">touch out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.hpp</span><br><span class="line">Notice file: frameworks/base/tools/aidl/NOTICE -- out/host/linux-x86/obj/NOTICE_FILES/src//bin/aidl.txt</span><br><span class="line">echo &#x27;#ifndef &#x27;aidl_language_y_h &gt; out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.h</span><br><span class="line">flex-2.5.39: loadlocale.c:130: _nl_intern_locale_data: Assertion `cnt &lt; (sizeof (_nl_value_type_LC_TIME) / sizeof (_nl_value_type_LC_TIME[0]))&#x27; failed.</span><br><span class="line">echo &#x27;#define &#x27;aidl_language_y_h &gt;&gt; out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.h</span><br><span class="line">cat out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.hpp &gt;&gt; out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.h</span><br><span class="line">Export includes file: frameworks/base/libs/androidfw/Android.mk -- out/host/linux-x86/obj/STATIC_LIBRARIES/libandroidfw_intermediates/export_includes</span><br><span class="line">Export includes file: frameworks/base/tools/aapt/Android.mk -- out/host/linux-x86/obj/STATIC_LIBRARIES/libaapt_intermediates/export_includes</span><br><span class="line">echo &#x27;#endif&#x27; &gt;&gt; out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_y.h</span><br><span class="line">build/core/binary.mk:646: recipe for target &#x27;out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_l.cpp&#x27; failed</span><br><span class="line">make: *** [out/host/linux-x86/obj/EXECUTABLES/aidl_intermediates/aidl_language_l.cpp] Aborted (core dumped)</span><br><span class="line">make: *** Waiting for unfinished jobs....</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:8: warning: tag &quot;sysui_statusbar_touch&quot; (36000) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">works/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:8</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:9: warning: tag &quot;sysui_heads_up_status&quot; (36001) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:9</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:10: warning: tag &quot;sysui_fullscreen_notification&quot; (36002) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:10</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:11: warning: tag &quot;sysui_heads_up_escalation&quot; (36003) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:11</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:19: warning: tag &quot;sysui_status_bar_state&quot; (36004) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:19</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:24: warning: tag &quot;sysui_panelbar_touch&quot; (36010) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:24</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:29: warning: tag &quot;sysui_notificationpanel_touch&quot; (36020) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:29</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:38: warning: tag &quot;sysui_lockscreen_gesture&quot; (36021) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:38</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:43: warning: tag &quot;sysui_quickpanel_touch&quot; (36030) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:43</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:48: warning: tag &quot;sysui_panelholder_touch&quot; (36040) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:48</span><br><span class="line">frameworks/base/packages/SystemUI/tests/src/com/android/systemui/EventLogTags.logtags:53: warning: tag &quot;sysui_searchpanel_touch&quot; (36050) duplicated in frameworks/base/packages/SystemUI/src/com/android/systemui/EventLogTags.logtags:53</span><br><span class="line">Note: Some input files use unchecked or unsafe operations.</span><br><span class="line">Note: Recompile with -Xlint:unchecked for details.</span><br><span class="line">Note: Some input files use unchecked or unsafe operations.</span><br><span class="line">Note: Recompile with -Xlint:unchecked for details.</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">### make failed to build some targets (51 seconds) ####</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果你希望编译不出错，就先执行下面的东西吧。。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo apt-get install libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown libxml2-utilsxsltproc zlib1g-dev:i386</span><br><span class="line"></span><br><span class="line">sudo apt-get install git gnupg flex bison gperf build-essential zip curllibc6-dev libncurses5-dev:i386 x11proto-core-dev</span><br><span class="line"></span><br><span class="line">sudo apt-get install bc</span><br><span class="line"></span><br><span class="line">sudo apt-get install lzop</span><br><span class="line"></span><br><span class="line">sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386</span><br><span class="line"></span><br><span class="line">sudo apt-get install bison</span><br><span class="line"></span><br><span class="line">sudo apt-get  install libxml2-utils</span><br><span class="line"></span><br><span class="line">sudo apt-get install curl</span><br><span class="line"></span><br><span class="line">//根目录执行</span><br><span class="line">export LC_ALL=C</span><br></pre></td></tr></table></figure>
-
-<p>export LC_ALL&#x3D;C<br>make -j8前执行</p>
-<p>最后就是执行编译了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">代码根目录下</span><br><span class="line">export LC_ALL=C</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://s3oy26lqr.hn-bkt.clouddn.com/gitblog/00001-aosp6.0.1/1699258117_4.png" alt="图片描述"></p>
-<p>虚拟机配置了8g内存，几年前的台式机配置编译1.5小时这样。</p>
-<p>如果配件都装好了，命令流程就这样的。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">//载入环境</span><br><span class="line">aosp@ubuntu:~/android/android-6.0.1_r1$ source build/envsetup.sh </span><br><span class="line">including device/asus/deb/vendorsetup.sh</span><br><span class="line">including device/asus/flo/vendorsetup.sh</span><br><span class="line">including device/asus/fugu/vendorsetup.sh</span><br><span class="line">including device/generic/mini-emulator-arm64/vendorsetup.sh</span><br><span class="line">including device/generic/mini-emulator-armv7-a-neon/vendorsetup.sh</span><br><span class="line">including device/generic/mini-emulator-mips/vendorsetup.sh</span><br><span class="line">including device/generic/mini-emulator-x86/vendorsetup.sh</span><br><span class="line">including device/generic/mini-emulator-x86_64/vendorsetup.sh</span><br><span class="line">including device/htc/flounder/vendorsetup.sh</span><br><span class="line">including device/huawei/angler/vendorsetup.sh</span><br><span class="line">including device/lge/bullhead/vendorsetup.sh</span><br><span class="line">including device/lge/hammerhead/vendorsetup.sh</span><br><span class="line">including device/moto/shamu/vendorsetup.sh</span><br><span class="line">including sdk/bash_completion/adb.bash</span><br><span class="line"></span><br><span class="line">aosp@ubuntu:~/android/android-6.0.1_r1$ lunch</span><br><span class="line"></span><br><span class="line">You&#x27;re building on Linux</span><br><span class="line"></span><br><span class="line">Lunch menu... pick a combo:</span><br><span class="line">     1. aosp_arm-eng</span><br><span class="line">     2. aosp_arm64-eng</span><br><span class="line">     3. aosp_mips-eng</span><br><span class="line">     4. aosp_mips64-eng</span><br><span class="line">     5. aosp_x86-eng</span><br><span class="line">     6. aosp_x86_64-eng</span><br><span class="line">     7. aosp_deb-userdebug</span><br><span class="line">     8. aosp_flo-userdebug</span><br><span class="line">     9. full_fugu-userdebug</span><br><span class="line">     10. aosp_fugu-userdebug</span><br><span class="line">     11. mini_emulator_arm64-userdebug</span><br><span class="line">     12. m_e_arm-userdebug</span><br><span class="line">     13. mini_emulator_mips-userdebug</span><br><span class="line">     14. mini_emulator_x86-userdebug</span><br><span class="line">     15. mini_emulator_x86_64-userdebug</span><br><span class="line">     16. aosp_flounder-userdebug</span><br><span class="line">     17. aosp_angler-userdebug</span><br><span class="line">     18. aosp_bullhead-userdebug</span><br><span class="line">     19. aosp_hammerhead-userdebug</span><br><span class="line">     20. aosp_hammerhead_fp-userdebug</span><br><span class="line">     21. aosp_shamu-userdebug</span><br><span class="line"></span><br><span class="line">Which would you like? [aosp_arm-eng] </span><br><span class="line"></span><br><span class="line">编译模拟器选择5，也就是输入5，回车</span><br><span class="line"></span><br><span class="line">Which would you like? [aosp_arm-eng] 5</span><br><span class="line"></span><br><span class="line">============================================</span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=6.0.1</span><br><span class="line">TARGET_PRODUCT=aosp_x86</span><br><span class="line">TARGET_BUILD_VARIANT=eng</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_BUILD_APPS=</span><br><span class="line">TARGET_ARCH=x86</span><br><span class="line">TARGET_ARCH_VARIANT=x86</span><br><span class="line">TARGET_CPU_VARIANT=</span><br><span class="line">TARGET_2ND_ARCH=</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=</span><br><span class="line">TARGET_2ND_CPU_VARIANT=</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-4.15.0-147-generic-x86_64-with-Ubuntu-18.04-bionic</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=MMB29K</span><br><span class="line">OUT_DIR=out</span><br><span class="line">============================================</span><br><span class="line"></span><br><span class="line">aosp@ubuntu:~/android/android-6.0.1_r1$ </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export LC_ALL=C</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
-
-<p>最后祝你好运~~~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://df13954.github.io/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" data-id="clommnn7p0000zxsmcdarfajz" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/06/hello-world/" class="article-date">
@@ -195,6 +124,55 @@
 
 
   
+    <article id="post-Ubuntu 18.04编译AOSP 6.0.1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:42:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/">Ubuntu 18.04编译AOSP 6.0.1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>编译6.0.1版本自己刷机到nexus 5x中</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://df13954.github.io/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" data-id="clommnn7p0000zxsmcdarfajz" data-title="Ubuntu 18.04编译AOSP 6.0.1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
 
 
 </section>
@@ -202,12 +180,33 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -226,11 +225,11 @@
       <ul>
         
           <li>
-            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/">(no title)</a>
+            <a href="/2023/11/06/hello-world/">Hello World</a>
           </li>
         
           <li>
-            <a href="/2023/11/06/hello-world/">Hello World</a>
+            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/">Ubuntu 18.04编译AOSP 6.0.1</a>
           </li>
         
       </ul>
