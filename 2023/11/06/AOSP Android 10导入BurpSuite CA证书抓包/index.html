@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AOSP Android 10导入BurpSuite CA证书抓包 | Hi~,靓仔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="证书准备从burp中导出证书，一般是der文件。 使用openssl将der格式转为pem格式，再转.0文件导入系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOSP Android 10导入BurpSuite CA证书抓包">
+<meta property="og:url" content="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/index.html">
+<meta property="og:site_name" content="Hi~,靓仔">
+<meta property="og:description" content="证书准备从burp中导出证书，一般是der文件。 使用openssl将der格式转为pem格式，再转.0文件导入系统。">
+<meta property="og:locale">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496142_1.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_2.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_3.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_4.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_5.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_6.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_7.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_8.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_9.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_10.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_11.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_12.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_13.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_14.png">
+<meta property="og:image" content="https://book.debuglive.cn/gzh/ic_gzh.png">
+<meta property="article:published_time" content="2023-11-06T01:55:19.000Z">
+<meta property="article:modified_time" content="2023-11-09T02:20:42.915Z">
+<meta property="article:author" content="黄大官AOSP">
+<meta property="article:tag" content="AOSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496142_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hi~,靓仔" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hi~,靓仔</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">每天坚持写bug</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AOSP Android 10导入BurpSuite CA证书抓包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:55:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AOSP Android 10导入BurpSuite CA证书抓包
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="证书准备"><a href="#证书准备" class="headerlink" title="证书准备"></a>证书准备</h2><p>从burp中导出证书，一般是der文件。</p>
+<p>使用openssl将der格式转为pem格式，再转.0文件导入系统。</p>
+<span id="more"></span>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">转为pem格式</span></span><br><span class="line">openssl x509 -inform DER -in cacert.der -out cacert.pem</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重命名为&lt;<span class="built_in">hash</span>值&gt;.0</span></span><br><span class="line">mv cacert.pem `openssl x509 -inform PEM -subject_hash_old -in cacert.pem |head -1`&#x27;.0&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496142_1.png" alt="图片描述"></p>
+<p>查看哈希可以这样。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//哈希</span><br><span class="line">openssl x509 -subject_hash_old -in &lt;certificate.pem&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入Android10系统"><a href="#导入Android10系统" class="headerlink" title="导入Android10系统"></a>导入Android10系统</h3><p>证书存放目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 证书位置，我们要放证书到这里</span><br><span class="line">/system/etc/security/cacerts</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_2.png" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_3.png" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_4.png" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496143_5.png" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_6.png" alt="图片描述"></p>
+<p>重启手机查看结果。</p>
+<h3 id="查看是否导入"><a href="#查看是否导入" class="headerlink" title="查看是否导入"></a>查看是否导入</h3><p>手机重启完成之后打开设置。<br>AOSP Android10.0<br>设置：安全：加密与凭证：信任的凭证</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_7.png" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_8.png" alt="图片描述"></p>
+<p>可以看到用户证书这里是没有的。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_9.png" alt="图片描述"></p>
+<p>PortSwigger就是我们导入的了。</p>
+<h3 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h3><p>下载这个工具，方便配置端口。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/westinyang/WiFiProxyAutoSet">https://gitee.com/westinyang/WiFiProxyAutoSet</a></p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_10.png" alt="图片描述"></p>
+<p>配置电脑端的burp开始抓包。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496144_11.png" alt="图片描述"></p>
+<p>查看电脑ip，电脑和手机处于同一个WiFi网络下。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_12.png" alt="图片描述"></p>
+<p>增加一个端口配置，比如8866，然后选择ip是我们电脑的ip就行了。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_13.png" alt="图片描述"></p>
+<p>手机的设置软件输入电脑配置的端口，ip，点击按钮就可以帮你一键设置WiFi网络设置那里的端口数据了，关闭只需要按一次关闭就行了，用这个工具可以代替每次打开关闭端口配置，很方便。</p>
+<h4 id="我们抓自己开发的app"><a href="#我们抓自己开发的app" class="headerlink" title="我们抓自己开发的app"></a>我们抓自己开发的app</h4><p>app地址：<a target="_blank" rel="noopener" href="https://www.pgyer.com/2UQk">https://www.pgyer.com/2UQk</a></p>
+<p>我目前写的app，大家可以随便玩。</p>
+<p>激活了burp之后我们切换到网络历史记录哪里，清空，然后在app做一次操作，比如我点赞了某个动态，或者其他详情什么的。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00006-aosp-burp/1699496145_14.png" alt="图片描述"></p>
+<p>这样头部数据和响应数据都看到了。</p>
+<p>剩下的就是自己玩了。</p>
+<h3 id="movecert模块把证书导入系统"><a href="#movecert模块把证书导入系统" class="headerlink" title="movecert模块把证书导入系统"></a>movecert模块把证书导入系统</h3><p><a target="_blank" rel="noopener" href="https://github.com/Magisk-Modules-Repo/movecert">https://github.com/Magisk-Modules-Repo/movecert</a><br>另一个方式就是这个了，因为AOSP编译输入的手机，系统具备adbd最高权限的，可以任意挂载目录，如果你的手机是其他厂商的，经过面具root之后可以使用movecert模块，安装证书用用户方式，启动模块，重启手机就行了。这个方式应该很多大佬都知道，我这里就不详细说。</p>
+<p>欢迎关注公众号：黄大官AOSP<br><img src="https://book.debuglive.cn/gzh/ic_gzh.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/" data-id="cloqka9dy00002gsmd0fafahj" data-title="AOSP Android 10导入BurpSuite CA证书抓包" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          AOSP Android 10内核编译刷入Pixel3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">AOSP Android 10.0无源码内置apk到系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 黄大官AOSP<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

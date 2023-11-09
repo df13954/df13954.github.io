@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AOSP Android 10内置FridaGadget实践02 | Hi~,靓仔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="背景内置frida-gadget前篇：AOSP Android 10内置FridaGadget实践01 上一篇内置完成脚本管理app后复制脚本到&#x2F;data&#x2F;system&#x2F;xsettings目录下无权限。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOSP Android 10内置FridaGadget实践02">
+<meta property="og:url" content="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/index.html">
+<meta property="og:site_name" content="Hi~,靓仔">
+<meta property="og:description" content="背景内置frida-gadget前篇：AOSP Android 10内置FridaGadget实践01 上一篇内置完成脚本管理app后复制脚本到&#x2F;data&#x2F;system&#x2F;xsettings目录下无权限。">
+<meta property="og:locale">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496994_12.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_13.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_14.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_15.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_16.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_17.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_18.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_19.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_20.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_21.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_22.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_23.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_24.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_25.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_26.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_27.png">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_28.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gzh/ic_gzh.png">
+<meta property="article:published_time" content="2023-11-06T02:55:19.000Z">
+<meta property="article:modified_time" content="2023-11-09T02:43:36.919Z">
+<meta property="article:author" content="黄大官AOSP">
+<meta property="article:tag" content="AOSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://book.debuglive.cn/gitblog/00008-gadget/1699496994_12.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hi~,靓仔" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hi~,靓仔</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">每天坚持写bug</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AOSP Android 10内置FridaGadget实践02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T02:55:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AOSP Android 10内置FridaGadget实践02
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内置<code>frida-gadget</code>前篇：<a target="_blank" rel="noopener" href="https://www.sunofbeach.net/a/1620356163351797762">AOSP Android 10内置FridaGadget实践01</a></p>
+<p>上一篇内置完成脚本管理app后复制脚本到<code>/data/system/xsettings</code>目录下无权限。</p>
+<span id="more"></span>
+<p>现在开始给文件夹配置权限。</p>
+<p>环境：</p>
+<p>vm Ubuntu 18.04</p>
+<p>AOSP 10_r41</p>
+<p>Pixel 3</p>
+<p>as</p>
+<h3 id="文件夹权限配置"><a href="#文件夹权限配置" class="headerlink" title="文件夹权限配置"></a>文件夹权限配置</h3><p>位置和文件：</p>
+<p>0x1:<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;public&#x2F;file.te</p>
+<p>末尾增加一行<br>这里和文件夹有关是xxxxx_file。<br>这个目录名字就是当时在rc文件配置的xsettings&#x2F;xxxxx目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type xiaojianbang_file, file_type, data_file_type, core_data_file_type, mlstrustedobject;</span><br></pre></td></tr></table></figure>
+
+<p>0x1:<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;file_context<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;prebuilts&#x2F;api&#x2F;29&#x2F;private&#x2F;file_contexts</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496994_12.jpg" alt="图片描述"></p>
+<p>这2个路径的文件69行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/system/xsettings(/.*)?  u:object_r:xiaojianbang_file:s0</span><br></pre></td></tr></table></figure>
+
+<p>0x2:<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;system_app.te<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;prebuilts&#x2F;api&#x2F;29&#x2F;private&#x2F;system_app.te</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_13.jpg" alt="图片描述"></p>
+<p>末尾：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow system_app xiaojianbang_file:dir &#123; getattr setattr open read write remove_name create add_name search rmdir &#125;;</span><br><span class="line">allow system_app xiaojianbang_file:file &#123; getattr setattr open read write create unlink &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>0x3:<br>末尾增加</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_14.jpg" alt="图片描述"></p>
+<p>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;untrusted_app.te</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow untrusted_app xiaojianbang_file:dir &#123; getattr open read write search rmdir &#125;;</span><br><span class="line">allow untrusted_app xiaojianbang_file:file &#123; getattr open read write &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;untrusted_app_25.te</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow untrusted_app_25 xiaojianbang_file:dir &#123; getattr open read write search rmdir &#125;;</span><br><span class="line">allow untrusted_app_25 xiaojianbang_file:file &#123; getattr open read write &#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;untrusted_app_27.te</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow untrusted_app_27 xiaojianbang_file:dir &#123; getattr open read write search rmdir &#125;;</span><br><span class="line">allow untrusted_app_27 xiaojianbang_file:file &#123; getattr open read write &#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;untrusted_app_all.te</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow untrusted_app_all xiaojianbang_file:dir &#123; getattr open read write search rmdir &#125;;</span><br><span class="line">allow untrusted_app_all xiaojianbang_file:file &#123; getattr open read write &#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>目录：<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;compat&#x2F;26.0&#x2F;26.0.ignore.cil<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;compat&#x2F;27.0&#x2F;27.0.ignore.cil<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;private&#x2F;compat&#x2F;28.0&#x2F;28.0.ignore.cil </p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_15.jpg" alt="图片描述"></p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496995_16.jpg" alt="图片描述"></p>
+<p>3个文件在apexd前增加：<br>xiaojianbang_file</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_17.jpg" alt="图片描述"></p>
+<p>目录：<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;prebuilts&#x2F;api&#x2F;29&#x2F;private&#x2F;compat&#x2F;26.0&#x2F;26.0.ignore.cil<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;prebuilts&#x2F;api&#x2F;29&#x2F;private&#x2F;compat&#x2F;27.0&#x2F;27.0.ignore.cil<br>android-10.0.0_r41&#x2F;system&#x2F;sepolicy&#x2F;prebuilts&#x2F;api&#x2F;29&#x2F;private&#x2F;compat&#x2F;28.0&#x2F;28.0.ignore.cil<br>3个文件在apexd前增加：<br>xiaojianbang_file</p>
+<p>策略增加完成之后，剩下的就是管理app的权限处理了。</p>
+<h3 id="管理脚本APP开发"><a href="#管理脚本APP开发" class="headerlink" title="管理脚本APP开发"></a>管理脚本APP开发</h3><p>管理功能描述：<br>1：查看当前用户安装的APP，当然也可以显示系统的，目前系统APP被我过滤。<br>2：点击APP后进入该APP的脚本状态显示，是否激活，该APP目录下有多少个脚本文件。<br>3：激活APP是否启用持久化hook。<br>4：选择加载的js脚本。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_18.png" alt="图片描述"></p>
+<p>当点击APP进入详情配置的时候，会在sdcard&#x2F;fjs中根据APP包名创建文件夹。<br>编写的js脚本需要放在该包名对应的文件下才能加载到，方便每个包管理。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_19.png" alt="图片描述"></p>
+<p>例如jike：</p>
+<p>脚本内容：<br>修改com.example.myjike.CheckRoot类方法isDeviceRooted返回值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Java.perform(function() &#123;</span><br><span class="line">    console.log(&quot;开始hook&quot;);</span><br><span class="line">    var checkClass = Java.use(&#x27;com.example.myjike.CheckRoot&#x27;);</span><br><span class="line"> </span><br><span class="line">    var isRoot = checkClass.isDeviceRooted.overload();</span><br><span class="line">    isRoot.implementation = function() &#123;</span><br><span class="line">         console.log(&quot;返回我们hook的值true&quot;);</span><br><span class="line">         return true;</span><br><span class="line">    &#125;;</span><br><span class="line">     </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这就是完成后的功能。</p>
+<p>激活操作是：<br>在xsettings中创建一个文件做标记，APP启动的时候第一篇文章已经分析过，根据包名和文件是否存在，<br>来注入so。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_20.jpg" alt="图片描述"></p>
+<p>复制脚本操作是：</p>
+<p>从sdcard中复制js文件到<code>xsettings</code>中对应的APP包名下。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_21.jpg" alt="图片描述"></p>
+<p>注入so的时候把脚本复制到APP安装目录下的<code>files</code>中。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_22.jpg" alt="图片描述"></p>
+<p>APP的操作主要是创建目录和文件，基本上没什么难度。</p>
+<p>重点是创建完包名后要给路径权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Os.chmod(path, <span class="number">0775</span>);</span><br></pre></td></tr></table></figure>
+
+<p>复制sdcard中的js文件到了xsettings之后需要给足够权限。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	  <span class="comment">//dest目标js文件的路径</span></span><br><span class="line">    Runtime.getRuntime().exec(<span class="string">&quot;chmod 777 &quot;</span> + dest);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果整个过程中遇到创建目录，复制文件实现异常，基本上权限问题。</p>
+<p>配置文件中需要给<br><code>android:sharedUserId=&quot;android.uid.system&quot;</code>，获取系统权限。</p>
+<p>内置apk到系统，或者把源码放进去AOSP源码一起编译也可以。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_23.jpg" alt="图片描述"></p>
+<h3 id="测试APP的hook效果"><a href="#测试APP的hook效果" class="headerlink" title="测试APP的hook效果"></a>测试APP的hook效果</h3><p>默认情况下方法返回false：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496996_24.png" alt="图片描述"></p>
+<p>把写好的js脚本放到sdcard&#x2F;fjs&#x2F;pkg目录下：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_25.png" alt="图片描述"></p>
+<p>进入管理app中，长按选择脚本，确认：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_26.png" alt="图片描述"></p>
+<p>打开目标APP查看hook结果：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_27.png" alt="图片描述"></p>
+<p>对接APP的代码预览：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00008-gadget/1699496997_28.jpg" alt="图片描述"></p>
+<p>这样就可以给具体的APP配置hook脚本，脱离pc使用了。</p>
+<p>视频版本的效果：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xG4y1X7GK">https://www.bilibili.com/video/BV1xG4y1X7GK</a></p>
+<p>欢迎关注公众号：黄大官AOSP<br><img src="https://book.debuglive.cn/gzh/ic_gzh.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/" data-id="cloql3ha10000a8sm2grr511u" data-title="AOSP Android 10内置FridaGadget实践02" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">AOSP Android 10内置FridaGadget实践01</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 黄大官AOSP<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

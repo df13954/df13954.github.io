@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ubuntu adb无法链接手机解决方法 | Hi~,靓仔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="手机连接Ubuntu虚拟机后fastboot无法识别手机首次连接Ubuntu虚拟机需要配置usb，不然fastboot就无法识别了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu adb无法链接手机解决方法">
+<meta property="og:url" content="https://me.debuglive.cn/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Hi~,靓仔">
+<meta property="og:description" content="手机连接Ubuntu虚拟机后fastboot无法识别手机首次连接Ubuntu虚拟机需要配置usb，不然fastboot就无法识别了。">
+<meta property="og:locale">
+<meta property="og:image" content="https://book.debuglive.cn//gzh/ic_gzh.png">
+<meta property="article:published_time" content="2023-11-06T01:42:19.000Z">
+<meta property="article:modified_time" content="2023-11-09T01:56:20.647Z">
+<meta property="article:author" content="黄大官AOSP">
+<meta property="article:tag" content="AOSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://book.debuglive.cn//gzh/ic_gzh.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hi~,靓仔" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hi~,靓仔</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">每天坚持写bug</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Ubuntu-adb无法链接手机解决方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:42:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ubuntu adb无法链接手机解决方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="手机连接Ubuntu虚拟机后fastboot无法识别"><a href="#手机连接Ubuntu虚拟机后fastboot无法识别" class="headerlink" title="手机连接Ubuntu虚拟机后fastboot无法识别"></a>手机连接Ubuntu虚拟机后fastboot无法识别</h2><p>手机首次连接Ubuntu虚拟机需要配置usb，不然fastboot就无法识别了。</p>
+<span id="more"></span>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 命令行</span></span><br><span class="line">lsusb</span><br><span class="line"><span class="comment">// 看到类似这样的数据，这个就是USB</span></span><br><span class="line">18d1:4ee7</span><br><span class="line"></span><br><span class="line">sudo vi /etc/udev/rules.d/<span class="number">51</span>-android.rules</span><br><span class="line"><span class="comment">// 把上面的数据替换到下面，如果你有多个设备多个端口要，可以写多行</span></span><br><span class="line">SUBSYSTEM==<span class="string">&quot;usb&quot;</span>, ATTR&#123;idVendor&#125;==<span class="string">&quot;18d1&quot;</span>, ATTR&#123;idProduct&#125;==<span class="string">&quot;4ee7&quot;</span>, MODE=<span class="string">&quot;0666&quot;</span>, GROUP=<span class="string">&quot;plugdev&quot;</span></span><br><span class="line"><span class="comment">// 授权</span></span><br><span class="line">sudo chmod a+rx /etc/udev/rules.d/<span class="number">51</span>-android.rules</span><br><span class="line"></span><br><span class="line">sudo chmod -R <span class="number">777</span> /etc/udev/rules.d</span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/udev restart</span><br><span class="line"></span><br><span class="line">sudo ./adb kill-server</span><br><span class="line">sudo ./adb devices</span><br><span class="line"></span><br><span class="line">sudo usermod -aG plugdev aosp</span><br><span class="line"><span class="comment">// 这里可以不用，这是SDK</span></span><br><span class="line">sudo apt-get install android-sdk-platform-tools-common</span><br><span class="line"></span><br><span class="line">重启电脑</span><br><span class="line">adb devices</span><br></pre></td></tr></table></figure>
+
+<p>这样子手机就可以链接虚拟机了</p>
+<p>欢迎关注公众号：黄大官AOSP<br><img src="https://book.debuglive.cn//gzh/ic_gzh.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="cloqjglb00000qismgbqi9rps" data-title="Ubuntu adb无法链接手机解决方法" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Ubuntu 18.04编译AOSP 6.0.1
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 黄大官AOSP<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -10,7 +10,7 @@
 <meta property="og:title" content="Hi~,靓仔">
 <meta property="og:url" content="https://me.debuglive.cn/index.html">
 <meta property="og:site_name" content="Hi~,靓仔">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale">
 <meta property="article:author" content="黄大官AOSP">
 <meta name="twitter:card" content="summary">
   
@@ -65,10 +65,10 @@
         
           <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
         
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
       </div>
     </div>
   </div>
@@ -76,6 +76,402 @@
 
       <div class="outer">
         <section id="main">
+  
+    <article id="post-AOSP Android 10内置FridaGadget实践02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T02:55:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内置<code>frida-gadget</code>前篇：<a target="_blank" rel="noopener" href="https://www.sunofbeach.net/a/1620356163351797762">AOSP Android 10内置FridaGadget实践01</a></p>
+<p>上一篇内置完成脚本管理app后复制脚本到<code>/data/system/xsettings</code>目录下无权限。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/" data-id="cloql3ha10000a8sm2grr511u" data-title="AOSP Android 10内置FridaGadget实践02" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AOSP Android 10内置FridaGadget实践01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T02:53:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>想做frida持久化hook，通过搜索资料发现gadget可以。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/" data-id="cloqkxoj80000a7sm10dd31o2" data-title="AOSP Android 10内置FridaGadget实践01" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AOSP Android 10内核编译刷入Pixel3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T02:52:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>下载Android10的内核源码编译并刷入Pixel3中，为后面的过反调试做准备。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" data-id="cloqktp23000085smco55dfa3" data-title="AOSP Android 10内核编译刷入Pixel3" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AOSP Android 10导入BurpSuite CA证书抓包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:55:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="证书准备"><a href="#证书准备" class="headerlink" title="证书准备"></a>证书准备</h2><p>从burp中导出证书，一般是der文件。</p>
+<p>使用openssl将der格式转为pem格式，再转.0文件导入系统。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/" data-id="cloqka9dy00002gsmd0fafahj" data-title="AOSP Android 10导入BurpSuite CA证书抓包" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AOSP Android 10.0无源码内置apk到系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:53:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>环境 AOSP 10</p>
+<p>当我们经常编译AOSP后有可能需要全量更新我们的修改，全量更新就意味着之前我们手机上面安装的软件都清空了，等同于回复出厂设置，那么我们可不可以提前放入一些我们自己需要用的APP呢，刷机之后APP就不用重复安装了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/" data-id="cloqjwplm0000y7sm1jnl9583" data-title="AOSP Android 10.0无源码内置apk到系统" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AOSP Android 10.0单编替换framework.jar刷入手机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010.0%E5%8D%95%E7%BC%96%E6%9B%BF%E6%8D%A2framework.jar%E5%88%B7%E5%85%A5%E6%89%8B%E6%9C%BA/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:52:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/AOSP%20Android%2010.0%E5%8D%95%E7%BC%96%E6%9B%BF%E6%8D%A2framework.jar%E5%88%B7%E5%85%A5%E6%89%8B%E6%9C%BA/">AOSP Android 10.0单编替换framework.jar刷入手机</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>修改framework的部分代码，做一些特殊的事。基于AOSP 10.0</p>
+<p>公众号地址：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/eNbePpJ-LU7D_Gt7YVKjrw">https://mp.weixin.qq.com/s/eNbePpJ-LU7D_Gt7YVKjrw</a></p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E5%8D%95%E7%BC%96%E6%9B%BF%E6%8D%A2framework.jar%E5%88%B7%E5%85%A5%E6%89%8B%E6%9C%BA/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010.0%E5%8D%95%E7%BC%96%E6%9B%BF%E6%8D%A2framework.jar%E5%88%B7%E5%85%A5%E6%89%8B%E6%9C%BA/" data-id="cloqjoszf0000tzsm2qng3xkc" data-title="AOSP Android 10.0单编替换framework.jar刷入手机" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Ubuntu 18.04编译AOSP 10.0r41刷入pixel3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%2010.0r41%E5%88%B7%E5%85%A5pixel3/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:49:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%2010.0r41%E5%88%B7%E5%85%A5pixel3/">Ubuntu 18.04编译AOSP 10.0r41刷入pixel3</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>已经在AOSP 7.1.1 nexus 5x上面实现了修改位置打卡，现在是想在pixel3中继续尝试。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%2010.0r41%E5%88%B7%E5%85%A5pixel3/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%2010.0r41%E5%88%B7%E5%85%A5pixel3/" data-id="cloqixihf0000xesm11mp8l0u" data-title="Ubuntu 18.04编译AOSP 10.0r41刷入pixel3" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Ubuntu 18.04编译AOSP 7.1.1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%207.1.1/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:44:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%207.1.1/">Ubuntu 18.04编译AOSP 7.1.1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前面一篇文章编译6.0本来是想给nexus5x刷的，结果Google没有提供驱动，那就给我的nexus5刷了。现在找到了5x需要的驱动和代码版本号，今天继续刷。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%207.1.1/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%207.1.1/" data-id="clopktse30000ywsm04pk82rf" data-title="Ubuntu 18.04编译AOSP 7.1.1" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
   
     <article id="post-Ubuntu 18.04编译AOSP 6.0.1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
@@ -112,7 +508,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" data-id="clommnn7p0000zxsmcdarfajz" data-title="Ubuntu 18.04编译AOSP 6.0.1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/" data-id="clommnn7p0000zxsmcdarfajz" data-title="Ubuntu 18.04编译AOSP 6.0.1" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Ubuntu-adb无法链接手机解决方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T01:42:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">Ubuntu adb无法链接手机解决方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="手机连接Ubuntu虚拟机后fastboot无法识别"><a href="#手机连接Ubuntu虚拟机后fastboot无法识别" class="headerlink" title="手机连接Ubuntu虚拟机后fastboot无法识别"></a>手机连接Ubuntu虚拟机后fastboot无法识别</h2><p>手机首次连接Ubuntu虚拟机需要配置usb，不然fastboot就无法识别了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="cloqjglb00000qismgbqi9rps" data-title="Ubuntu adb无法链接手机解决方法" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
       
       
       
@@ -134,7 +579,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
     </div>
@@ -163,7 +608,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
     </div>
@@ -173,12 +618,28 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/">Ubuntu 18.04编译AOSP 6.0.1</a>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
           </li>
         
       </ul>

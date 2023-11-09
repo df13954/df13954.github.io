@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AOSP Android 10内核编译刷入Pixel3 | Hi~,靓仔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="背景下载Android10的内核源码编译并刷入Pixel3中，为后面的过反调试做准备。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOSP Android 10内核编译刷入Pixel3">
+<meta property="og:url" content="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/index.html">
+<meta property="og:site_name" content="Hi~,靓仔">
+<meta property="og:description" content="背景下载Android10的内核源码编译并刷入Pixel3中，为后面的过反调试做准备。">
+<meta property="og:locale">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496990_1.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496990_2.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_3.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_4.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_5.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_6.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_7.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_8.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496993_9.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496993_10.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496994_11.jpg">
+<meta property="og:image" content="https://book.debuglive.cn/gzh/ic_gzh.png">
+<meta property="article:published_time" content="2023-11-06T02:52:19.000Z">
+<meta property="article:modified_time" content="2023-11-09T02:34:50.566Z">
+<meta property="article:author" content="黄大官AOSP">
+<meta property="article:tag" content="AOSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496990_1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hi~,靓仔" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hi~,靓仔</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">每天坚持写bug</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AOSP Android 10内核编译刷入Pixel3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" class="article-date">
+  <time class="dt-published" datetime="2023-11-06T02:52:19.000Z" itemprop="datePublished">2023-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AOSP Android 10内核编译刷入Pixel3
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>下载Android10的内核源码编译并刷入Pixel3中，为后面的过反调试做准备。</p>
+<span id="more"></span>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>mv Ubuntu 18.04</p>
+<p>已经成功编译的AOSP 10_r41环境，编译内核需要源码交叉编译环境。</p>
+<p>Pixel3</p>
+<h3 id="下载内核代码"><a href="#下载内核代码" class="headerlink" title="下载内核代码"></a>下载内核代码</h3><p>Ubuntu中找个非中文路径的位置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/bin</span><br><span class="line">echo &quot;PATH=~/bin:\$PATH&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br><span class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 或者使用 curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo -o repo</span></span></span><br><span class="line">chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure>
+
+<p>repo是用来下载代码的，如果你已经安装了就进入下一步。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 创建一个目录</span></span></span><br><span class="line">mkdir k</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 例如我的目录是</span></span></span><br><span class="line">/home/aosp/k</span><br><span class="line">cd k</span><br><span class="line">repo init -u https://android.googlesource.com/kernel/manifest -b android-msm-crosshatch-4.9-android10-qpr1 --depth=1</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 看到这样的信息就表示OK</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># repo has been initialized in /home/aosp/k</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 同步代码-j8是下载线程，建议4</span></span></span><br><span class="line">repo sync -c --no-tags -j4</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里有个很严重的坑</strong></p>
+<p>不要使用Mac下载源码复制到Ubuntu中！</p>
+<p>不要使用Mac下载源码复制到Ubuntu中！</p>
+<p>不要使用Mac下载源码复制到Ubuntu中！</p>
+<p>由于大小写不敏感，下载文件比如a.h和A.h只有其中一份，编译内核的时候会导致文件丢失<code>missing xxx</code>。等等。</p>
+<p>这里访问的是android.googlesource.com的地址，需要留学上网才能下载代码。自己想办法。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496990_1.jpg" alt="图片描述"></p>
+<p>同步代码速度慢估计一个小时就OK，目录结构大概是这样：</p>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496990_2.jpg" alt="图片描述"></p>
+<h3 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h3><p>编译内核我们需要编译AOSP的环境变量。</p>
+<p>进入我们的源码目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 载入编译源码环境</span></span></span><br><span class="line">source build/envsetup.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 3就是Pixel3的产品线，blueline_user_debug版本。</span></span></span><br><span class="line">lunch 3</span><br></pre></td></tr></table></figure>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_3.jpg" alt="图片描述"></p>
+<p>载入环境之后，进入内核源码目录，开始编译。编译内核需要<code>libssl-dev</code>库，如果你没有安装，需要安装这个库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libssl-dev</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_4.jpg" alt="图片描述"></p>
+<p>可以通过命令查询是否已经安装了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 进入内核源码目录</span></span></span><br><span class="line">./build/build.sh</span><br></pre></td></tr></table></figure>
+
+<p>编译大概需要十分钟这样，具体看电脑配置。</p>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496991_5.jpg" alt="图片描述"></p>
+<p>到这里内核编译完成了。</p>
+<h3 id="刷入手机Pixel3中"><a href="#刷入手机Pixel3中" class="headerlink" title="刷入手机Pixel3中"></a>刷入手机Pixel3中</h3><p>前提：</p>
+<p>已经编译AOSP完成，且刷入手机是没问题的，正常屏幕触摸，WiFi，蓝牙连接正常，相机麦克风可用。</p>
+<p>查看当前系统的内核：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell cat /proc/version</span><br><span class="line">Linux version 4.9.210-gdee0d123b122-ab6570413 (android-build@abfarm-east4-083) (Android (5484270 based on r353983c) clang version 9.0.3 (https://android.googlesource.com/toolchain/clang 745b335211bb9eadfa6aa6301f84715cee4b37c5) (https://android.googlesource.com/toolchain/llvm 60cf23e54e46c807513f7a36d0a7b777920b5881) (based on LLVM 9.0.3svn)) #0 SMP PREEMPT Tue Jun 9 02:10:51 UTC 2020</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 版本和分支信息4.9.210-gdee0d123b122</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="设置新的内核环境变量"><a href="#设置新的内核环境变量" class="headerlink" title="设置新的内核环境变量"></a>设置新的内核环境变量</h4><p>先把编译好的系统刷入手机中。</p>
+<p>源码目录下执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 重启手机到bl模式</span></span></span><br><span class="line">adb reboot bootloader</span><br><span class="line">fastboot flashall -w</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 开始刷机</span></span></span><br></pre></td></tr></table></figure>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_6.jpg" alt="图片描述"></p>
+<p>AOSP源码本身是附带了内核产物的，默认情况下编译boot.img会使用AOSP源码目录中的内核产物。位置在：</p>
+<p><code>/home/aosp/aosp/android-10.0.0_r41/device/google/crosshatch-kernel/</code></p>
+<p>也就是源码根目录下的：<code>device/google/crosshatch-kernel/</code></p>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_7.jpg" alt="图片描述"></p>
+<p>我们重新构建<code>boot.img</code>的时候需要重定向到新编译成功的目录</p>
+<p>在<code>/home/aosp/aosp/android-10.0.0_r41</code>目录下执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 内核位置指向我们自己编译的位置，当前窗口有效</span></span></span><br><span class="line">export TARGET_PREBUILT_KERNEL=/home/aosp/aosp/k/out/android-msm-pixel-4.9/dist/Image.lz4</span><br></pre></td></tr></table></figure>
+
+<p>如果想恢复默认内核位置，执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export TARGET_PREBUILT_KERNEL=&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>开始构建新的内核boot.img</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 源码根目录执行</span></span></span><br><span class="line">make bootimage</span><br></pre></td></tr></table></figure>
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496992_8.jpg" alt="图片描述"></p>
+<h4 id="刷入新内核"><a href="#刷入新内核" class="headerlink" title="刷入新内核"></a>刷入新内核</h4><p>构建成功之后，刷入<code>ko</code>文件，再刷入新的<code>boot.img</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">adb root </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 关闭验证</span></span></span><br><span class="line">adb disable-verity </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 重启手机</span></span></span><br><span class="line">adb reboot </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 重启机器成功之后：</span></span></span><br><span class="line">adb root </span><br><span class="line">adb remount -R </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 这里按照这个流程跑</span></span></span><br></pre></td></tr></table></figure>
+
+<p>进入内核目录</p>
+<p>我的位置是<code>/home/aosp/k</code>执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push /out/android-msm-pixel-4.9/dist/*.ko /vendor/lib/modules</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496993_9.jpg" alt="图片描述"></p>
+<p>接着进入bl模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb reboot bootloader</span><br></pre></td></tr></table></figure>
+
+<p>进入AOSP编译的产物目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">android-10.0.0_r41\out\target\product\blueline</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 执行，临时用新内核启动系统</span></span></span><br><span class="line">fastboot boot boot.img</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 执行完成后会重启。手机启动之后可以查看内核版本了。</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 继续</span></span></span><br><span class="line">adb reboot bootloader</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 烧入新内核</span></span></span><br><span class="line">fastboot flash boot boot.img</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496993_10.jpg" alt="图片描述"></p>
+<p>查看内核信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell cat /proc/version</span><br><span class="line">Linux version 4.9.185-g9f181f6d (build-user@build-host) (Android (5484270 based on r353983c) clang version 9.0.3 (https://android.googlesource.com/toolchain/clang 745b335211bb9eadfa6aa6301f84715cee4b37c5) (https://android.googlesource.com/toolchain/llvm 60cf23e54e46c807513f7a36d0a7b777920b5881) (based on LLVM 9.0.3svn)) #1 SMP PREEMPT Mon Nov 11 18:47:17 UTC 2019</span><br></pre></td></tr></table></figure>
+
+<p>在内核目录下产物目录下执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># k/out/android-msm-pixel-4.9/dist</span></span></span><br><span class="line">grep -a &#x27;Linux version&#x27; Image.lz4-dtb</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://book.debuglive.cn/gitblog/00007-pixel3-kernel/1699496994_11.jpg" alt="图片描述"></p>
+<p>这里的内核信息和我们手机上面的一致。</p>
+<p>到此编译和烧录到手机完结。</p>
+<p>视频讲解版本：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1oT411X7gc">哔站，讲解内核编译遇到问题</a></p>
+<p>整体流程版本：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1JA41167Vm/?vd_source=76d437fab6961fcbf9da5564bd8f8776">哔站内核编译整体流程</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1：不要使用Mac下载内核源码。</p>
+<p>2：下载内核的地址是google地址，需要留学上网。</p>
+<p>3：需要AOSP编译的环境。</p>
+<p>4：编译内核后需要注意刷入ko和boot.img的顺序。</p>
+<p>欢迎关注公众号：黄大官AOSP<br><img src="https://book.debuglive.cn/gzh/ic_gzh.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" data-id="cloqktp23000085smco55dfa3" data-title="AOSP Android 10内核编译刷入Pixel3" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          AOSP Android 10内置FridaGadget实践01
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">AOSP Android 10导入BurpSuite CA证书抓包</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/">AOSP Android 10.0无源码内置apk到系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 黄大官AOSP<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
