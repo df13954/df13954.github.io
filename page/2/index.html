@@ -1,253 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hans">
+
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hi~,靓仔</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hi~,靓仔">
-<meta property="og:url" content="https://me.debuglive.cn/page/2/index.html">
-<meta property="og:site_name" content="Hi~,靓仔">
-<meta property="og:locale">
-<meta property="article:author" content="黄大官AOSP">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hi~,靓仔" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="黄大官AOSP">
+
+
+    <meta name="subtitle" content="每天坚持写bug">
+
+
+
+
+<title>Hi~,靓仔</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
+    <link rel="stylesheet" href="/css/style.css">
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-  
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
 <meta name="generator" content="Hexo 7.0.0"></head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hi~,靓仔</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">每天坚持写bug</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://me.debuglive.cn"></form>
-      </div>
-    </div>
-  </div>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">靓仔 Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">靓仔 Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
 </header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-Ubuntu-adb无法链接手机解决方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2023-11-06T01:42:19.000Z" itemprop="datePublished">2023-11-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">Ubuntu adb无法链接手机解决方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="手机连接Ubuntu虚拟机后fastboot无法识别"><a href="#手机连接Ubuntu虚拟机后fastboot无法识别" class="headerlink" title="手机连接Ubuntu虚拟机后fastboot无法识别"></a>手机连接Ubuntu虚拟机后fastboot无法识别</h2><p>手机首次连接Ubuntu虚拟机需要配置usb，不然fastboot就无法识别了。</p>
-        
-          <p class="article-more-link">
-            <a href="/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more">Read More</a>
-          </p>
-        
-      
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                
+    <div class="container profile-container">
+    <div class="intro">
+        <div class="avatar">
+            <a href="/archives"><img src="/image/avatar.jpeg"></a>
+        </div>
+        <div class="nickname">靓仔</div>
+        <div class="description"><p>公众号:黄大官AOSP</p>
+</div>
+        <div class="links">
+            
+                
+                    <a class="link-item" title="Blog" href="/archives">
+                        
+                        
+                            <i class="iconfont icon-blog"></i>
+                        
+                    </a>
+                
+            
+        </div>
     </div>
-    <footer class="article-footer">
-      <a data-url="https://me.debuglive.cn/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="cloqjglb00000qismgbqi9rps" data-title="Ubuntu adb无法链接手机解决方法" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
+</div>
 
 
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/">Android AOSP学习</a></li></ul>
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 黄大官AOSP | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOSP/" rel="tag">AOSP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AOSP/" style="font-size: 20px;">AOSP</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/11/13/Android%20Studio%E9%85%8D%E7%BD%AEollvm%E7%BC%96%E8%AF%91so/">Android Studio配置ollvm编译so</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/">AOSP Android 10内置FridaGadget实践02</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/">AOSP Android 10内置FridaGadget实践01</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/">AOSP Android 10内核编译刷入Pixel3</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/">AOSP Android 10导入BurpSuite CA证书抓包</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2023 黄大官AOSP<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
+
 </html>
