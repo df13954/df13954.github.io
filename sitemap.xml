@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://me.debuglive.cn/link/index.html</loc>
+    
+    <lastmod>2023-11-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/categories/index.html</loc>
+    
+    <lastmod>2023-11-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/tags/index.html</loc>
+    
+    <lastmod>2023-11-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/about/index.html</loc>
+    
+    <lastmod>2023-11-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/category/index.html</loc>
+    
+    <lastmod>2023-11-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/tag/index.html</loc>
+    
+    <lastmod>2023-11-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/13/Android%20Studio%E9%85%8D%E7%BD%AEollvm%E7%BC%96%E8%AF%91so/</loc>
+    
+    <lastmod>2023-11-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010%E5%AF%BC%E5%85%A5BurpSuite%20CA%E8%AF%81%E4%B9%A6%E6%8A%93%E5%8C%85/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010.0%E6%97%A0%E6%BA%90%E7%A0%81%E5%86%85%E7%BD%AEapk%E5%88%B0%E7%B3%BB%E7%BB%9F/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/AOSP%20Android%2010.0%E5%8D%95%E7%BC%96%E6%9B%BF%E6%8D%A2framework.jar%E5%88%B7%E5%85%A5%E6%89%8B%E6%9C%BA/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/Ubuntu-adb%E6%97%A0%E6%B3%95%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%2010.0r41%E5%88%B7%E5%85%A5pixel3/</loc>
+    
+    <lastmod>2023-11-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%207.1.1/</loc>
+    
+    <lastmod>2023-11-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/2023/11/06/Ubuntu%2018.04%E7%BC%96%E8%AF%91AOSP%206.0.1/</loc>
+    
+    <lastmod>2023-11-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  <url>
+    <loc>https://me.debuglive.cn/</loc>
+    <lastmod>2023-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://me.debuglive.cn/tags/AOSP/</loc>
+    <lastmod>2023-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/tags/Android/</loc>
+    <lastmod>2023-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://me.debuglive.cn/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2023-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://me.debuglive.cn/categories/Android/</loc>
+    <lastmod>2023-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+</urlset>
