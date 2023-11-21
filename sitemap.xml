@@ -157,7 +157,7 @@
 
   <url>
     <loc>https://me.debuglive.cn/</loc>
-    <lastmod>2023-11-20</lastmod>
+    <lastmod>2023-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -165,14 +165,14 @@
   
   <url>
     <loc>https://me.debuglive.cn/tags/AOSP/</loc>
-    <lastmod>2023-11-20</lastmod>
+    <lastmod>2023-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://me.debuglive.cn/tags/Android/</loc>
-    <lastmod>2023-11-20</lastmod>
+    <lastmod>2023-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -181,14 +181,14 @@
   
   <url>
     <loc>https://me.debuglive.cn/categories/Android-AOSP%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2023-11-20</lastmod>
+    <lastmod>2023-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://me.debuglive.cn/categories/Android/</loc>
-    <lastmod>2023-11-20</lastmod>
+    <lastmod>2023-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
