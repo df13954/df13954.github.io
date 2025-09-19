@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="zh_CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hi~,靓仔 | Hi~,靓仔</title><meta name="author" content="黄大官AOSP"><meta name="copyright" content="黄大官AOSP"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="真的服了！阿里面试4轮，RecyclerView问了七遍！！！收录于 · 程序员百晓生 原文：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;535090117 阿里面试总共4轮，其中有3轮面试都问到了RecyclerView的问题。面试的点各不相同，有原理、嵌套问题、有缓存实现，但是最终都是殊途同归，所有的问题都汇集在,如何对RecyclerView做性能优化？ 1.1 Recycle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hi~,靓仔">
+<meta property="og:url" content="https://me.debuglive.cn/2025/09/19/Android%20RecyclerView%E7%BC%93%E5%AD%98%E5%88%86%E6%9E%90-%E8%BD%AC%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Hi~,靓仔">
+<meta property="og:description" content="真的服了！阿里面试4轮，RecyclerView问了七遍！！！收录于 · 程序员百晓生 原文：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;535090117 阿里面试总共4轮，其中有3轮面试都问到了RecyclerView的问题。面试的点各不相同，有原理、嵌套问题、有缓存实现，但是最终都是殊途同归，所有的问题都汇集在,如何对RecyclerView做性能优化？ 1.1 Recycle">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://me.debuglive.cn/img/avatar.jpeg">
+<meta property="article:published_time" content="2025-09-19T02:10:15.311Z">
+<meta property="article:modified_time" content="2025-09-19T02:17:33.200Z">
+<meta property="article:author" content="黄大官AOSP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://me.debuglive.cn/img/avatar.jpeg"><link rel="shortcut icon" href="/img/avatar.jpeg"><link rel="canonical" href="https://me.debuglive.cn/2025/09/19/Android%20RecyclerView%E7%BC%93%E5%AD%98%E5%88%86%E6%9E%90-%E8%BD%AC%E8%BD%BD/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hi~,靓仔',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-19 10:17:33'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpeg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hi~,靓仔"><span class="site-name">Hi~,靓仔</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Untitled</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-19T02:10:15.311Z" title="Created 2025-09-19 10:10:15">2025-09-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-19T02:17:33.200Z" title="Updated 2025-09-19 10:17:33">2025-09-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="真的服了！阿里面试4轮，RecyclerView问了七遍！！！"><a href="#真的服了！阿里面试4轮，RecyclerView问了七遍！！！" class="headerlink" title="真的服了！阿里面试4轮，RecyclerView问了七遍！！！"></a>真的服了！阿里面试4轮，RecyclerView问了七遍！！！</h1><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1316872452236853248">收录于 · 程序员百晓生</a></p>
+<p>原文：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/535090117">https://zhuanlan.zhihu.com/p/535090117</a></p>
+<p>阿里面试总共4轮，其中有3轮面试都问到了RecyclerView的问题。面试的点各不相同，有原理、嵌套问题、有缓存实现，但是最终都是殊途同归，所有的问题都汇集在,如何对RecyclerView做<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96&zhida_source=entity">性能优化</a>？</p>
+<h2 id="1-1-RecyclerView第一次layout时，会发生预布局pre-layout吗？"><a href="#1-1-RecyclerView第一次layout时，会发生预布局pre-layout吗？" class="headerlink" title="1.1 RecyclerView第一次layout时，会发生预布局pre-layout吗？"></a>1.1 RecyclerView第一次layout时，会发生预布局pre-layout吗？</h2><p>第一次布局时，并不会触发pre-layout。pre-layout只会在每次notify change时才会被触发，目的是通过saveOldPosition方法将屏幕中各位置上的ViewHolder的坐标记录下来，并在重新布局之后，<strong>通过对比实现Item的动画效果</strong>。比如以下效果：</p>
+<p><img src="https://pic2.zhimg.com/v2-e1cdaec8d75de2a223c4beea9e62ea0b_1440w.jpg"></p>
+<h2 id="1-2-如果自定义LayoutManager需要注意什么？"><a href="#1-2-如果自定义LayoutManager需要注意什么？" class="headerlink" title="1.2 如果自定义LayoutManager需要注意什么？"></a>1.2 如果自定义LayoutManager需要注意什么？</h2><p>在RecyclerView的dispatchLayoutStep1阶段，会调用自定义LayoutManager的 supportsPredictiveItemAnimations 方法判断在某些状态下是否展示predictive animation。以下LinearLayoutManager的实现：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public boolean supportsPredictiveItemAnimations() &#123;</span><br><span class="line">return mPendingSavedState == null &amp;&amp; mLastStackFromEnd == mStackFromEnd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果 supportsPredictiveItemAnimations 返回true，则LayoutManager中复写onLayoutChildren方法会被调用2次：一次是在pre-layout，另一次是real-layout。</p>
+<p>因为会有pre-layout和real-layout，所有在自定义LayoutManager中，需要根据RecyclerView.State中的isPreLayout方法的返回值，在这两次布局中做区分。比如LinearLayoutManager中的onLayoutChildren中有如下判断：</p>
+<p><img src="https://pic3.zhimg.com/v2-b525813cbc4f6e079c165084ade94a4e_1440w.jpg"></p>
+<p>上面代码中有一段注释：</p>
+<blockquote>
+<p>if the child is visible and we are going to move it around, we should layout <strong>extra</strong> <strong>items</strong> in the opposite direction to make sure new items animate nicely instead of just fading in</p>
+</blockquote>
+<p>代表的意思就是如果当前正在update的item是可见状态，则需要在pre-layout阶段<strong>额外填充</strong>一个item，目的是为了保证处于不可见状态的item可以平滑的滑动到屏幕内。</p>
+<h2 id="1-3-举例说明"><a href="#1-3-举例说明" class="headerlink" title="1.3 举例说明"></a>1.3 举例说明</h2><p>比如下图中点击item2将其删除，调用notifyItemRemoved后，在pre-layout之前item5并没有被添加到RecyclerView中，而经过pre-layout之后，item5经过布局会被填充到RecyclerView中</p>
+<p><img src="https://pica.zhimg.com/v2-e2a71116143f76ef56ea49f64500143e_1440w.jpg"></p>
+<p>当item移出屏幕之后，item5会随同item3和item4一起向上移动，如下图所示：</p>
+<p><img src="https://book.debuglive.cn/gitblog/zhihu-001/1.gif" alt="动图封面"></p>
+<p>如果自定义LayoutManager并没有实现pre-layout，或者实现不合理，则当item2移出屏幕时，只会将item3和item4进行平滑移动，而item5只是单纯的appear到屏幕中，如下所示：</p>
+<p><img src="https://book.debuglive.cn/gitblog/zhihu-001/2.gif" alt="动图封面"></p>
+<p>可以看出item5并没有同item3和item4一起平滑滚动到屏幕内，这样界面上显示会给用户卡顿的感觉。</p>
+<h2 id="1-4-ViewHolder何时被缓存到RecycledViewPool中？"><a href="#1-4-ViewHolder何时被缓存到RecycledViewPool中？" class="headerlink" title="1.4 ViewHolder何时被缓存到RecycledViewPool中？"></a>1.4 ViewHolder何时被缓存到RecycledViewPool中？</h2><p>主要有以下2种情况：</p>
+<ol>
+<li>当ItemView被滑动出屏幕时，并且CachedView已满，则ViewHolder会被缓存到RecycledViewPool中</li>
+<li>当数据发生变动时，执行完disappearrance的ViewHolder会被缓存到RecycledViewPool中</li>
+</ol>
+<h2 id="1-5-CachedView和RecycledViewPool的关系"><a href="#1-5-CachedView和RecycledViewPool的关系" class="headerlink" title="1.5 CachedView和RecycledViewPool的关系"></a>1.5 CachedView和RecycledViewPool的关系</h2><p>当一个ItemView被滑动滚出屏幕之后，默认会先被保存在CachedView中。CachedView的默认大小为2，可以通过 setItemViewCacheSize 方法修改它的值。当CachedView已满后，后续有新的ItemView从屏幕内滑出时，会迫使CachedView根据FIFO规则，将之前的缓存的ViewHolder转移到RecycledViewPool中，效果可以参考下图：</p>
+<p><img src="https://book.debuglive.cn/gitblog/zhihu-001/3.gif" alt="动图封面"></p>
+<p>RecycledViewPool默认大小为5，可以通过以下方式修改RecycledViewPool的缓存大小：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RecyclerView.getRecycledViewPool().setMaxRecycledViews(int viewType, int max);</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-CachedView和RecycledViewPool两者区别"><a href="#1-6-CachedView和RecycledViewPool两者区别" class="headerlink" title="1.6 CachedView和RecycledViewPool两者区别"></a>1.6 CachedView和RecycledViewPool两者区别</h2><p>缓存到CachedView中的ViewHolder并不会清理相关信息(比如position、state等)，因此刚移出屏幕的ViewHolder，再次被移回屏幕时，只要从CachedView中查找并显示即可，不需要重新绑定(bindViewHolder)。</p>
+<p>而缓存到RecycledViewPool中的ViewHolder会被清理状态和位置信息，因此从RecycledViewPool查找到ViewHolder，需要重新调用bindViewHolder<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE&zhida_source=entity">绑定数据</a>。</p>
+<h2 id="1-7-你是从哪些方面优化RecyclerView的？"><a href="#1-7-你是从哪些方面优化RecyclerView的？" class="headerlink" title="1.7 你是从哪些方面优化RecyclerView的？"></a>1.7 你是从哪些方面优化RecyclerView的？</h2><p>我总结了几点，主要可以从以下几个方面对RecyclerView进行优化：</p>
+<blockquote>
+<p>尽量将复杂的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86&zhida_source=entity">数据处理</a>操作放到<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E5%BC%82%E6%AD%A5&zhida_source=entity">异步</a>中完成。RecyclerView需要展示的数据经常是从<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E8%BF%9C%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8&zhida_source=entity">远端服务器</a>上请求获取，但是在网络请求拿到数据之后，需要将数据做扁平化操作，尽量将最优质的数据格式返回给<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=UI%E7%BA%BF%E7%A8%8B&zhida_source=entity">UI线程</a>。<br>优化RecyclerView的布局，避免将其与ConstraintLayout使用<br>针对快速滑动事件，可以使用addOnScrollListener添加对快速滑动的监听，当用户快速滑动时，停止加载数据操作。<br>如果ItemView的高度固定，可以使用setHasFixSize(true)。这样RecyclerView在onMeasure阶段可以直接计算出高度，不需要多次计算子ItemView的高度，这种情况对于垂直RecyclerView中嵌套横向RecyclerView效果非常显著。<br>当UI是Tab feed流时，可以考虑使用RecycledViewPool来实现多个RecyclerView的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=207042321&content_type=Article&match_order=1&q=%E7%BC%93%E5%AD%98%E5%85%B1%E4%BA%AB&zhida_source=entity">缓存共享</a>。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://me.debuglive.cn">黄大官AOSP</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://me.debuglive.cn/2025/09/19/Android%20RecyclerView%E7%BC%93%E5%AD%98%E5%88%86%E6%9E%90-%E8%BD%AC%E8%BD%BD/">https://me.debuglive.cn/2025/09/19/Android%20RecyclerView%E7%BC%93%E5%AD%98%E5%88%86%E6%9E%90-%E8%BD%AC%E8%BD%BD/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>Sponsor</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wxx.jpeg" target="_blank"><img class="post-qr-code-img" src="/img/wxx.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/11/13/Android%20Studio%E9%85%8D%E7%BD%AEollvm%E7%BC%96%E8%AF%91so/" title="Android Studio配置ollvm编译so"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">Android Studio配置ollvm编译so</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpeg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">黄大官AOSP</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">人生如逆旅,我亦是行人.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9C%9F%E7%9A%84%E6%9C%8D%E4%BA%86%EF%BC%81%E9%98%BF%E9%87%8C%E9%9D%A2%E8%AF%954%E8%BD%AE%EF%BC%8CRecyclerView%E9%97%AE%E4%BA%86%E4%B8%83%E9%81%8D%EF%BC%81%EF%BC%81%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">真的服了！阿里面试4轮，RecyclerView问了七遍！！！</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-RecyclerView%E7%AC%AC%E4%B8%80%E6%AC%A1layout%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E9%A2%84%E5%B8%83%E5%B1%80pre-layout%E5%90%97%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 RecyclerView第一次layout时，会发生预布局pre-layout吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%A6%82%E6%9E%9C%E8%87%AA%E5%AE%9A%E4%B9%89LayoutManager%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 如果自定义LayoutManager需要注意什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-ViewHolder%E4%BD%95%E6%97%B6%E8%A2%AB%E7%BC%93%E5%AD%98%E5%88%B0RecycledViewPool%E4%B8%AD%EF%BC%9F"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 ViewHolder何时被缓存到RecycledViewPool中？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-CachedView%E5%92%8CRecycledViewPool%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 CachedView和RecycledViewPool的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-CachedView%E5%92%8CRecycledViewPool%E4%B8%A4%E8%80%85%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 CachedView和RecycledViewPool两者区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-%E4%BD%A0%E6%98%AF%E4%BB%8E%E5%93%AA%E4%BA%9B%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96RecyclerView%E7%9A%84%EF%BC%9F"><span class="toc-number">1.7.</span> <span class="toc-text">1.7 你是从哪些方面优化RecyclerView的？</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/19/Android%20RecyclerView%E7%BC%93%E5%AD%98%E5%88%86%E6%9E%90-%E8%BD%AC%E8%BD%BD/" title="Untitled">Untitled</a><time datetime="2025-09-19T02:10:15.311Z" title="Created 2025-09-19 10:10:15">2025-09-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/13/Android%20Studio%E9%85%8D%E7%BD%AEollvm%E7%BC%96%E8%AF%91so/" title="Android Studio配置ollvm编译so">Android Studio配置ollvm编译so</a><time datetime="2023-11-13T02:52:19.000Z" title="Created 2023-11-13 10:52:19">2023-11-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B502/" title="AOSP Android 10内置FridaGadget实践02">AOSP Android 10内置FridaGadget实践02</a><time datetime="2023-11-06T02:55:19.000Z" title="Created 2023-11-06 10:55:19">2023-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E7%BD%AEFridaGadget%E5%AE%9E%E8%B7%B501/" title="AOSP Android 10内置FridaGadget实践01">AOSP Android 10内置FridaGadget实践01</a><time datetime="2023-11-06T02:53:19.000Z" title="Created 2023-11-06 10:53:19">2023-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/06/AOSP%20Android%2010%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%88%B7%E5%85%A5Pixel3/" title="AOSP Android 10内核编译刷入Pixel3">AOSP Android 10内核编译刷入Pixel3</a><time datetime="2023-11-06T02:52:19.000Z" title="Created 2023-11-06 10:52:19">2023-11-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 黄大官AOSP</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">簡</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="fb-customerchat" id="fb-customer-chat" attribution="biz_inbox"></div><script>(() => {
+  document.getElementById('fb-root') ? '' : document.body.insertAdjacentHTML('afterend', '<div id="fb-root"></div>')
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml: true,
+      version: 'v16.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/zh_CN/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  const isChatBtn = false
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    window.chatBtnFn = () => {
+      const isShow = document.querySelector('.fb_customer_chat_bounce_in_v2')
+      isShow ? FB.CustomerChat.hide() : FB.CustomerChat.show()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        FB.CustomerChat.hide()
+      },
+      show: () => {
+        FB.CustomerChat.show(false)
+      }
+    }
+  }
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
